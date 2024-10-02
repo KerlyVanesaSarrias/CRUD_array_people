@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { Person } from './components/Person';
+import { People } from './components/People';
 
 function App() {
 
@@ -27,7 +28,9 @@ function App() {
 
   return (
     <div>
-      <Person/>
+      <People
+      people={people}
+      setPeople={setPeople}/>
 
     </div>
   )
