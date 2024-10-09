@@ -4,28 +4,28 @@ import { useState } from "react";
 
 export const People = ({ people, setPeople }) => {
 
-const [editingId, setEditingId] = useState(people);
-const [editedPerson, setEditedPerson] = useState(
-    {
-        name: '',
-        role: '',
-        img:''
-    });
+    const [editingId, setEditingId] = useState(people);
+    const [editedPerson, setEditedPerson] = useState(
+        {
+            name: '',
+            role: '',
+            img: ''
+        });
 
-const handleChange =(e) => {
-    const { name, value } = e.target;
-    setEditedPerson((prev) => ({ ...prev, [name]: value }));
-}
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEditedPerson((prev) => ({ ...prev, [name]: value }));
+    }
 
-const handleCreate = (e) => {
-    e.preventDefault();
-    setPeople([...people,{id:people.length + 1, ...editedPerson}])
-    setEditedPerson({
-        name: '',
-        role: '',
-        img:''
-    })
-}
+    const handleCreate = (e) => {
+        e.preventDefault();
+        setPeople([...people, { id: people.length + 1, ...editedPerson }])
+        setEditedPerson({
+            name: '',
+            role: '',
+            img: ''
+        })
+    }
 
 
 
@@ -50,9 +50,28 @@ const handleCreate = (e) => {
                         })
                     }
                 </div>
-            </div>
-            <div>
-                
+
+                <div className='container'>
+                    <h2 className='text-center mt-4' >Crear Nuevo Empleado</h2>
+                    <form action="">
+                        <div>
+                            <label htmlFor="name">Nombres</label>
+                            <input type="text" name="name" value={editedPerson.name} onChange={handleChange} required className="form-control" />
+                        </div>
+                        <div>
+                            <label htmlFor="name">Rol</label>
+                            <input type="text" name="name" value={editedPerson.role} onChange={handleChange} required className="form-control" />
+                        </div>
+                        <div>
+                            <label htmlFor="name">Avatar</label>
+                            <input type="text" name="name" value={editedPerson.img} onChange={handleChange} required className="form-control" />
+                        </div>
+                        <div className="mt-2 text-center">
+                            <button type="submit" className="btn btn-primary"> Crear</button>
+                        </div>
+                            
+                    </form>
+                </div>
             </div>
         </div>
     )
