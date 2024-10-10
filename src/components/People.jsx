@@ -11,6 +11,7 @@ export const People = ({ people, setPeople }) => {
             role: '',
             img: ''
         });
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,9 +27,12 @@ export const People = ({ people, setPeople }) => {
             img: ''
         })
     }
-
-
-
+    const handleEdit = (id) => {
+        setEditingId(id);
+        setIsEditing(true);
+        const personToEdit = people.find((person) => person.id === id);
+        setEditedPerson({...personToEdit}); 
+    }
 
     return (
         <div>
@@ -44,6 +48,7 @@ export const People = ({ people, setPeople }) => {
                                         name={people.name}
                                         img={people.img}
                                         role={people.role}
+                                        handleEdit={() => handleEdit(people.id)}
                                     />
                                 </div>
                             );
