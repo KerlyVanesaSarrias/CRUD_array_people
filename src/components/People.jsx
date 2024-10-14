@@ -5,12 +5,7 @@ import { useState } from "react";
 export const People = ({ people, setPeople }) => {
 
     const [editingId, setEditingId] = useState(people);
-    const [editedPerson, setEditedPerson] = useState(
-        {
-            name: '',
-            role: '',
-            img: ''
-        });
+    const [editedPerson, setEditedPerson] = useState({name: '', role: '', img: ''});
     const [isEditing, setIsEditing] = useState(false);
 
     const handleChange = (e) => {
@@ -27,11 +22,27 @@ export const People = ({ people, setPeople }) => {
             img: ''
         })
     }
+
     const handleEdit = (id) => {
         setEditingId(id);
         setIsEditing(true);
         const personToEdit = people.find((person) => person.id === id);
         setEditedPerson({...personToEdit}); 
+    }
+
+    const handleSave =(e) => {
+        e.preventDefault();
+        const updatePeople = people.map((person) => person.id === editingId ? {...person, ...editedPerson}
+        : person);
+        setPeople(updatePeople);
+        setIsEditing(false);
+        setEditingId(null);
+        setEditedPerson({
+            name: '',
+            role: '',
+            img: ''
+        })
+
     }
 
     return (
@@ -57,7 +68,7 @@ export const People = ({ people, setPeople }) => {
                 </div>
 
                 <div className='container'>
-                    <h2 className='text-center mt-4' >Crear Nuevo Empleado</h2>
+                    <h2 className='text-center mt-4' >{isEditing ? 'Modificar empleado' : 'crear nuevo empleado'}</h2>
                     <form action="">
                         <div>
                             <label htmlFor="name">Nombres</label>
@@ -65,14 +76,14 @@ export const People = ({ people, setPeople }) => {
                         </div>
                         <div>
                             <label htmlFor="name">Rol</label>
-                            <input type="text" name="name" value={editedPerson.role} onChange={handleChange} required className="form-control" />
+                            <input type="text" name="role" value={editedPerson.role} onChange={handleChange} required className="form-control" />
                         </div>
                         <div>
                             <label htmlFor="name">Avatar</label>
-                            <input type="text" name="name" value={editedPerson.img} onChange={handleChange} required className="form-control" />
+                            <input type="text" name="img" value={editedPerson.img} onChange={handleChange} required className="form-control" />
                         </div>
                         <div className="mt-2 text-center">
-                            <button type="submit" className="btn btn-primary"> Crear</button>
+                            <button type="submit" className="btn btn-primary" onClick={isEditing ? handleSave : handleCreate}> {isEditing ? 'Modificar' : 'Crear'}</button>
                         </div>
                             
                     </form>
