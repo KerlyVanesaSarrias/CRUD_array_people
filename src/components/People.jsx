@@ -5,8 +5,9 @@ import { useState } from "react";
 export const People = ({ people, setPeople }) => {
 
     const [editingId, setEditingId] = useState(people);
-    const [editedPerson, setEditedPerson] = useState({name: '', role: '', img: ''});
+    const [editedPerson, setEditedPerson] = useState({ name: '', role: '', img: '' });
     const [isEditing, setIsEditing] = useState(false);
+    const [personToDelete, setPersonToDelete] = useState(null)
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,13 +28,13 @@ export const People = ({ people, setPeople }) => {
         setEditingId(id);
         setIsEditing(true);
         const personToEdit = people.find((person) => person.id === id);
-        setEditedPerson({...personToEdit}); 
+        setEditedPerson({ ...personToEdit });
     }
 
-    const handleSave =(e) => {
+    const handleSave = (e) => {
         e.preventDefault();
-        const updatePeople = people.map((person) => person.id === editingId ? {...person, ...editedPerson}
-        : person);
+        const updatePeople = people.map((person) => person.id === editingId ? { ...person, ...editedPerson }
+            : person);
         setPeople(updatePeople);
         setIsEditing(false);
         setEditingId(null);
@@ -42,7 +43,19 @@ export const People = ({ people, setPeople }) => {
             role: '',
             img: ''
         })
+    }
+    const handleDelete = (id) => {
+        setPersonToDelete(id)
+    }
 
+    const confirmDelete = () => {
+        setPeople(people.filter(person => person.id !== personToDelete))
+        setPersonToDelete(null)
+
+    }
+
+    const cancelDelete = () => {
+        setPersonToDelete(null)
     }
 
     return (
@@ -60,6 +73,8 @@ export const People = ({ people, setPeople }) => {
                                         img={people.img}
                                         role={people.role}
                                         handleEdit={() => handleEdit(people.id)}
+                                        handleDelete={handleDelete}
+
                                     />
                                 </div>
                             );
@@ -85,8 +100,26 @@ export const People = ({ people, setPeople }) => {
                         <div className="mt-2 text-center">
                             <button type="submit" className="btn btn-primary" onClick={isEditing ? handleSave : handleCreate}> {isEditing ? 'Modificar' : 'Crear'}</button>
                         </div>
-                            
+
                     </form>
+                </div>
+                <div id='deleteModal' className="modal fade" tabIndex='-1' >
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Confirmar eliminación</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label onClick={cancelDelete}>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <p> ¿Estás seguro de eliminar a {people.find(person => person.id === personToDelete)?.name}?</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={cancelDelete}>cancelar</button>
+                                <button  type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={confirmDelete}>Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

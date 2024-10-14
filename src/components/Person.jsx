@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export const Person = ({name, role, img, handleEdit }) => {
+export const Person = ({id, name, role, img, handleEdit, handleDelete }) => {
     return (
         <div className='col'>
             <div className="card mb-4" style={{ width: "18rem;" }}>
@@ -11,7 +11,7 @@ export const Person = ({name, role, img, handleEdit }) => {
                 </div>
                 <div className='container mb-4'>
                     <button className="btn btn-success mx-2"  onClick={handleEdit} >Editar</button>
-                    <button className="btn btn-danger">Eliminar</button>
+                    <button className="btn btn-danger" onClick={() => handleDelete(id)} data-bs-toggle='modal' data-bs-target= '#deleteModal' >Eliminar</button>
                 </div>
             </div>
         </div>
@@ -23,6 +23,8 @@ Person.propTypes = {
     name: PropTypes.string,
     role: PropTypes.string,
     img: PropTypes.string,
-    handleEdit: PropTypes.func
+    handleEdit: PropTypes.func,
+    handleDelete: PropTypes.func
+
 
 }
